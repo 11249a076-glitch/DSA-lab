@@ -4,32 +4,43 @@
 
 struct Node {
     int data;
-    struct Node *prev;
-    struct Node *next;
+    struct Node *prev;  
+    struct Node *next;  
 };
 
 
+// Function to create a new node with given data
 struct Node *CreateNode(int data) {
     struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+
     if (!newNode) {
         printf("Memory allocation failed!\n");
         return NULL;
     }
+
+                                     // Initialize new node
     newNode->data = data;
     newNode->prev = NULL;
     newNode->next = NULL;
+
     return newNode;
 }
 
 
+                                     // Insert node at the beginning of the list
 void InsertAtBeginning(struct Node **head, int data) {
     struct Node *newNode = CreateNode(data);
 
+                                      // If list is empty
     if (*head == NULL) {
         *head = newNode;
-    } else {
+    } 
+    else {
+                                      // Link new node with current head
         newNode->next = *head;
         (*head)->prev = newNode;
+
+                                       // Move head to new node
         *head = newNode;
     }
 
@@ -40,22 +51,24 @@ void InsertAtBeginning(struct Node **head, int data) {
 void InsertAtEnd(struct Node **head, int data) {
     struct Node *newNode = CreateNode(data);
 
+                                            // If list is empty → new node becomes head
     if (*head == NULL) {
         *head = newNode;
         printf("Node %d inserted at end.\n", data);
         return;
     }
 
+                                             // Traverse to the last node
     struct Node *temp = *head;
     while (temp->next != NULL)
         temp = temp->next;
 
+                                              // Insert new node at end
     temp->next = newNode;
     newNode->prev = temp;
 
     printf("Node %d inserted at end.\n", data);
 }
-
 
 void InsertAtPosition(struct Node **head, int data, int position) {
     if (position < 1) {
@@ -63,6 +76,7 @@ void InsertAtPosition(struct Node **head, int data, int position) {
         return;
     }
 
+                                     // If position is 1 → insert at beginning
     if (position == 1) {
         InsertAtBeginning(head, data);
         return;
@@ -70,6 +84,7 @@ void InsertAtPosition(struct Node **head, int data, int position) {
 
     struct Node *temp = *head;
     int i;
+
     for (i = 1; i < position - 1 && temp != NULL; i++) {
         temp = temp->next;
     }
@@ -80,6 +95,8 @@ void InsertAtPosition(struct Node **head, int data, int position) {
     }
 
     struct Node *newNode = CreateNode(data);
+
+                                 // Adjust links for insertion
     newNode->next = temp->next;
     newNode->prev = temp;
 
@@ -92,6 +109,7 @@ void InsertAtPosition(struct Node **head, int data, int position) {
 }
 
 
+                                       // Delete a node by value
 void DeleteNode(struct Node **head, int value) {
     if (*head == NULL) {
         printf("List is empty, deletion not possible.\n");
@@ -100,9 +118,9 @@ void DeleteNode(struct Node **head, int value) {
 
     struct Node *temp = *head;
 
-    
     if (temp->data == value) {
-        *head = temp->next;
+        *head = temp->next;                // Move head to next node
+
         if (*head != NULL)
             (*head)->prev = NULL;
 
@@ -111,7 +129,7 @@ void DeleteNode(struct Node **head, int value) {
         return;
     }
 
-    
+                                   // Traverse to find the node to delete
     while (temp != NULL && temp->data != value) {
         temp = temp->next;
     }
@@ -121,7 +139,7 @@ void DeleteNode(struct Node **head, int value) {
         return;
     }
 
-    
+                                     // Adjust surrounding links
     if (temp->prev != NULL)
         temp->prev->next = temp->next;
 
@@ -148,6 +166,7 @@ void DisplayList(struct Node *head) {
     }
 }
 
+
 int main() {
     struct Node *head = NULL;
     int choice, data, pos;
@@ -164,6 +183,7 @@ int main() {
         scanf("%d", &choice);
 
         switch (choice) {
+
         case 1:
             printf("Enter data: ");
             scanf("%d", &data);
@@ -200,5 +220,6 @@ int main() {
             printf("Invalid choice! Try again.\n");
         }
     }
+
     return 0;
 }
